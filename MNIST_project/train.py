@@ -3,7 +3,7 @@ import torch.nn as nn
 import torch.optim as optim
 from torchvision import datasets, transforms
 from torch.utils.data import DataLoader
-from model import SimpleCNN
+from model_cnn import SimpleCNN
 
 def main():
     # 1. Chọn thiết bị (GPU nếu có)
