@@ -3,7 +3,7 @@ import torch
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
-from mlp_model import MLP_MODEL
+from mlp_model import MlpModel
 from dataset import get_data_loaders
 
 # Nhận weights_path làm tham số truyền vào
@@ -11,7 +11,7 @@ def predict_and_visualize(weights_path="mlp_mnist.pth"):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     
     # 1. Khởi tạo mô hình
-    model = MLP_MODEL().to(device)
+    model = MlpModel().to(device)
     
     # 2. Nạp trọng số từ đường dẫn được truyền vào
     print(f"--> Đang nạp trọng số từ: {weights_path}")
