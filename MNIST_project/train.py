@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
 import torch.optim as optim
-from mlp_model import MlpModel      # Import model bạn đã viết
+from cnn_model import CnnModel
 from dataset import get_data_loaders # Import pipeline dữ liệu
 
 def train():
@@ -18,7 +18,7 @@ def train():
     train_loader, test_loader = get_data_loaders(batch_size=BATCH_SIZE)
 
     # 4. Khởi tạo mô hình và chuyển sang GPU (nếu có)
-    model = MlpModel().to(device)
+    model = CnnModel().to(device)
 
     # 5. Định nghĩa Loss function và Optimizer
     # CrossEntropyLoss: Phân loại đa lớp
@@ -73,7 +73,7 @@ def train():
         print(f"Epoch [{epoch+1}/{EPOCHS}] - Train Loss: {epoch_loss:.4f} - Test Accuracy: {accuracy:.2f}%")
 
     # 7. Lưu trọng số mô hình sau khi train xong
-    model_save_path = "mlp_mnist.pth"
+    model_save_path = "cnn_mnist.pth"
     torch.save(model.state_dict(), model_save_path)
     print(f"--> Đã lưu trọng số mô hình vào {model_save_path}")
 
