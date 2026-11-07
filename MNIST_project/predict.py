@@ -1,4 +1,6 @@
 import torch
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from mlp_model import MlpModel
 from dataset import get_data_loaders
@@ -43,7 +45,10 @@ def predict_and_visualize():
         ax.set_title(f"Pred: {preds[i].item()} (True: {labels[i].item()})", color=color)
     
     plt.tight_layout()
-    plt.show()
+    save_path = "predictions.png"
+    plt.savefig(save_path, bbox_inches='tight')
+    print(f"--> Đã lưu ảnh kết quả dự đoán vào: {save_path}")
+    plt.close() # Giải phóng bộ nhớ RAM
 
 if __name__ == "__main__":
     predict_and_visualize()
