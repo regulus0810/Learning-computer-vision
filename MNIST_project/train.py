@@ -1,66 +1,81 @@
 import torch
 import torch.nn as nn
 import torch.optim as optim
-from torchvision import datasets, transforms
-from torch.utils.data import DataLoader
-from model_cnn import SimpleCNN
+from mlp_model import MlpModel      # Import model bạn đã viết
+from dataset import get_data_loaders # Import pipeline dữ liệu
 
-def main():
-    # 1. Chọn thiết bị (GPU nếu có)
+def train():
+    # 1. Cấu hình thiết bị (CPU hoặc GPU trên Kaggle)
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    print(f"--> Đang sử dụng thiết bị: {device}")
+    print(f"--> Sử dụng thiết bị: {device}")
 
-    # 2. Tiền xử lý & Tải dataset MNIST
-    transform = transforms.Compose([
-        transforms.ToTensor(),
-        transforms.Normalize((0.1307,), (0.3081,))
-    ])
+    # 2. Hyperparameters (Siêu tham số)
+    BATCH_SIZE = 64
+    LEARNING_RATE = 0.001
+    EPOCHS = 5
 
-    print("--> Đang tải dữ liệu MNIST...")
-    train_dataset = datasets.MNIST(root='./data', train=True, download=True, transform=transform)
-    test_dataset = datasets.MNIST(root='./data', train=False, download=True, transform=transform)
+    # 3. Nạp dữ liệu
+    train_loader, test_loader = get_data_loaders(batch_size=BATCH_SIZE)
 
-    train_loader = DataLoader(train_dataset, batch_size=64, shuffle=True)
-    test_loader = DataLoader(test_dataset, batch_size=1000, shuffle=False)
+    # 4. Khởi tạo mô hình và chuyển sang GPU (nếu có)
+    model = MlpModel().to(device)
 
-    # 3. Khởi tạo Model, Loss function, Optimizer
-    model = SimpleCNN().to(device)
+    # 5. Định nghĩa Loss function và Optimizer
+    # CrossEntropyLoss: Phân loại đa lớp
     criterion = nn.CrossEntropyLoss()
-    optimizer = optim.Adam(model.parameters(), lr=0.001)
+    # Adam: Thuật toán tối ưu phổ biến, ổn định và hội tụ nhanh
+    optimizer = optim.Adam(model.parameters(), lr=LEARNING_RATE)
 
-    epochs = 5
-    print("--> Bắt đầu quá trình huấn luyện:")
-
-    for epoch in range(1, epochs + 1):
+    # 6. BẮT ĐẦU VÒNG LẶP HUẤN LUYỆN
+    print("--> Bắt đầu huấn luyện...")
+    for epoch in range(EPOCHS):
+        # --- CHẾ ĐỘ TRAIN ---
         model.train()
-        total_loss = 0.0
-        for batch_idx, (data, target) in enumerate(train_loader):
-            data, target = data.to(device), target.to(device)
+        running_loss = 0.0
+        
+        for batch_idx, (images, labels) in enumerate(train_loader):
+            # Đưa dữ liệu lên GPU
+            images, labels = images.to(device), labels.to(device)
+
+            # --- 5 BƯỚC HUẤN LUYỆN ---
+            # 1. Forward
+            outputs = model(images)
+            # 2. Tính Loss
+            loss = criterion(outputs, labels)
+            # 3. Xóa gradient cũ
             optimizer.zero_grad()
-            output = model(data)
-            loss = criterion(output, target)
+            # 4. Backward (Lan truyền ngược)
             loss.backward()
+            # 5. Cập nhật trọng số
             optimizer.step()
-            total_loss += loss.item()
 
-        avg_loss = total_loss / len(train_loader)
+            running_loss += loss.item()
 
-        # Đánh giá sau mỗi epoch
+        epoch_loss = running_loss / len(train_loader)
+
+        # --- CHẾ ĐỘ ĐÁNH GIÁ (TEST / EVALUATION) ---
         model.eval()
         correct = 0
-        with torch.no_grad():
-            for data, target in test_loader:
-                data, target = data.to(device), target.to(device)
-                output = model(data)
-                pred = output.argmax(dim=1, keepdim=True)
-                correct += pred.eq(target.view_as(pred)).sum().item()
+        total = 0
 
-        accuracy = 100. * correct / len(test_loader.dataset)
-        print(f"Epoch {epoch}/{epochs} | Train Loss: {avg_loss:.4f} | Test Acc: {accuracy:.2f}%")
+        with torch.no_grad(): # Không tính gradient để tiết kiệm VRAM
+            for images, labels in test_loader:
+                images, labels = images.to(device), labels.to(device)
+                outputs = model(images)
+                
+                # outputs có shape [64, 10]. Lấy vị trí có xác suất cao nhất (dim=1)
+                _, predicted = torch.max(outputs, 1)
+                
+                total += labels.size(0)
+                correct += (predicted == labels).sum().item()
 
-    # 4. Lưu lại checkpoint
-    torch.save(model.state_dict(), "mnist_cnn.pth")
-    print("--> Đã lưu mô hình vào mnist_cnn.pth")
+        accuracy = 100.0 * correct / total
+        print(f"Epoch [{epoch+1}/{EPOCHS}] - Train Loss: {epoch_loss:.4f} - Test Accuracy: {accuracy:.2f}%")
 
-if __name__ == '__main__':
-    main()
+    # 7. Lưu trọng số mô hình sau khi train xong
+    model_save_path = "mlp_mnist.pth"
+    torch.save(model.state_dict(), model_save_path)
+    print(f"--> Đã lưu trọng số mô hình vào {model_save_path}")
+
+if __name__ == "__main__":
+    train()
