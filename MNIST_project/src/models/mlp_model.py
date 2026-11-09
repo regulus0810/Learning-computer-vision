@@ -1,22 +1,34 @@
+'''
 # Multi-layer perceptron model
+Mô hình MLP (Fully Connected), các neuron chi nhận vector 1 chiều. Do đó cần duỗi phẳng ảnh (flatten)
+Suy ra:
+    - Input: (Batch_Size, 784)
+    - Output: (Batch_Size, 10)
+- Kiến trúc MLP 2 hidden layers
+    - Linear layer 1: 784 c -> 128 c
+    - Lỉnear layer 2: 128 c -> 64 c
+    - Linear layer 3: 64 c -> output: 10
+'''
+
+from .. import config
 
 import torch
 import torch.nn as nn
 
 class MlpModel(nn.Module):
-    def __init__(self):
+    def __init__(self, in_features=784, hidden_1=128, hidden_2=64, num_classes=10):
         # Bắt buộc: Gọi hàm khởi tạo của class cha nn.Module để PyTorch quản lý các trọng số
         super(MlpModel, self).__init__()
         
         # 1. Định nghĩa các tầng tuyến tính (Linear / Dense layers)
         # nn.Linear(số_chiều_đầu_vào, số_chiều_đầu_ra)
-        self.fc1 = nn.Linear(784, 128)  # Tầng 1: 784 -> 128
+        self.fc1 = nn.Linear(in_features, hidden_1)  # Tầng 1: 784 -> 128
         self.relu1 = nn.ReLU()          # Hàm kích hoạt ReLU
         
-        self.fc2 = nn.Linear(128, 64)   # Tầng 2: 128 -> 64
+        self.fc2 = nn.Linear(hidden_1, hidden_2)   # Tầng 2: 128 -> 64
         self.relu2 = nn.ReLU()          # Hàm kích hoạt ReLU
         
-        self.fc3 = nn.Linear(64, 10)    # Tầng 3 (Output): 64 -> 10 lớp
+        self.fc3 = nn.Linear(hidden_2, num_classes)    # Tầng 3 (Output): 64 -> 10 lớp
         
     def forward(self, x):
         """
@@ -47,7 +59,11 @@ class MlpModel(nn.Module):
 # --- KIỂM TRA MÔ HÌNH (Sanity Check) ---
 if __name__ == "__main__":
     # 1. Khởi tạo mô hình
-    model = MlpModel()
+    input_size = config.MlpConfig.INPUT_SIZE
+    hidden_1 = config.MlpConfig.HIDDEN_1
+    hidden_2 = config.MlpConfig.HIDDEN_2
+    num_classes = config.MlpConfig.NUM_CLASSES
+    model = MlpModel(input_size, hidden_1, hidden_2, num_classes)
     print("Kiến trúc mô hình:")
     print(model)
     

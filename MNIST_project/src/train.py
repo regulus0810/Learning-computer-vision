@@ -1,3 +1,6 @@
+
+import config
+
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -10,12 +13,12 @@ def train():
     print(f"--> Sử dụng thiết bị: {device}")
 
     # 2. Hyperparameters (Siêu tham số)
-    BATCH_SIZE = 64
-    LEARNING_RATE = 0.001
-    EPOCHS = 5
+    batch_size = config.BATCH_SIZE
+    learning_rate = config.LEARNING_RATE
+    epochs = config.EPOCHS
 
     # 3. Nạp dữ liệu
-    train_loader, test_loader = get_data_loaders(batch_size=BATCH_SIZE)
+    train_loader, test_loader = get_data_loaders(batch_size=batch_size)
 
     # 4. Khởi tạo mô hình và chuyển sang GPU (nếu có)
     model = CnnModel().to(device)
@@ -24,11 +27,11 @@ def train():
     # CrossEntropyLoss: Phân loại đa lớp
     criterion = nn.CrossEntropyLoss()
     # Adam: Thuật toán tối ưu phổ biến, ổn định và hội tụ nhanh
-    optimizer = optim.Adam(model.parameters(), lr=LEARNING_RATE)
+    optimizer = optim.Adam(model.parameters(), lr=learning_rate)
 
     # 6. BẮT ĐẦU VÒNG LẶP HUẤN LUYỆN
     print("--> Bắt đầu huấn luyện...")
-    for epoch in range(EPOCHS):
+    for epoch in range(epochs):
         # --- CHẾ ĐỘ TRAIN ---
         model.train()
         running_loss = 0.0
@@ -70,7 +73,7 @@ def train():
                 correct += (predicted == labels).sum().item()
 
         accuracy = 100.0 * correct / total
-        print(f"Epoch [{epoch+1}/{EPOCHS}] - Train Loss: {epoch_loss:.4f} - Test Accuracy: {accuracy:.2f}%")
+        print(f"Epoch [{epoch+1}/{epochs}] - Train Loss: {epoch_loss:.4f} - Test Accuracy: {accuracy:.2f}%")
 
     # 7. Lưu trọng số mô hình sau khi train xong
     model_save_path = "cnn_mnist.pth"
