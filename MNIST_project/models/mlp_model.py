@@ -9,9 +9,6 @@ Suy ra:
     - Lỉnear layer 2: 128 c -> 64 c
     - Linear layer 3: 64 c -> output: 10
 '''
-
-from .. import config
-
 import torch
 import torch.nn as nn
 
@@ -59,11 +56,7 @@ class MlpModel(nn.Module):
 # --- KIỂM TRA MÔ HÌNH (Sanity Check) ---
 if __name__ == "__main__":
     # 1. Khởi tạo mô hình
-    input_size = config.MlpConfig.INPUT_SIZE
-    hidden_1 = config.MlpConfig.HIDDEN_1
-    hidden_2 = config.MlpConfig.HIDDEN_2
-    num_classes = config.MlpConfig.NUM_CLASSES
-    model = MlpModel(input_size, hidden_1, hidden_2, num_classes)
+    model = MlpModel()
     print("Kiến trúc mô hình:")
     print(model)
     

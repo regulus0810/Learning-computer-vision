@@ -3,7 +3,7 @@ import torch
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
-from mlp_model import MlpModel
+from models.mlp_model import MlpModel
 from dataset import get_data_loaders
 
 # Nhận weights_path làm tham số truyền vào

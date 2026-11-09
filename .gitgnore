@@ -1,0 +1,61 @@
+# ==========================================
+# 1. DỮ LIỆU (DATASETS) - BẮT BUỘC BỎ QUA
+# ==========================================
+# Tuyệt đối không push dataset lên Git (làm phình to repo, dễ lỗi quá tải)
+data/
+**/data/
+*.zip
+*.tar
+*.gz
+*.tar.gz
+
+# ==========================================
+# 2. FILE TRỌNG SỐ MÔ HÌNH (WEIGHTS / CHECKPOINTS)
+# ==========================================
+# Các file weights (.pth, .pt) sau này có thể nặng hàng trăm MB đến hàng GB
+# GitHub chặn các file > 100MB. Các file này nên lưu trên Cloud/Kaggle/Drive
+*.pth
+*.pt
+*.onnx
+*.pkl
+*.h5
+*.ckpt
+
+# ==========================================
+# 3. PYTHON CACHE & MÔI TRƯỜNG ẢO
+# ==========================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Môi trường ảo (Virtual Environments)
+venv/
+.venv/
+env/
+ENV/
+
+# ==========================================
+# 4. NOTEBOOK & KAGGLE
+# ==========================================
+.ipynb_checkpoints/
+*-checkpoint.ipynb
+
+# Tuyệt đối không để lộ Kaggle API key lên GitHub
+kaggle.json
+
+# ==========================================
+# 5. LOGS HUẤN LUYỆN & VISUALIZATION
+# ==========================================
+runs/
+wandb/
+*.log
+
+# ==========================================
+# 6. HỆ ĐIỀU HÀNH & IDE CONFIG
+# ==========================================
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini

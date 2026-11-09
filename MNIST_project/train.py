@@ -21,7 +21,7 @@ def train():
     train_loader, test_loader = get_data_loaders(batch_size=batch_size)
 
     # 4. Khởi tạo mô hình và chuyển sang GPU (nếu có)
-    model = CnnModel().to(device)
+    model = MlpModel().to(device)
 
     # 5. Định nghĩa Loss function và Optimizer
     # CrossEntropyLoss: Phân loại đa lớp
