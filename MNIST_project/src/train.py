@@ -4,7 +4,7 @@ import config
 import torch
 import torch.nn as nn
 import torch.optim as optim
-from cnn_model import CnnModel
+from models.cnn_model import CnnModel
 from dataset import get_data_loaders # Import pipeline dữ liệu
 
 def train():
