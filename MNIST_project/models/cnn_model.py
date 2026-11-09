@@ -1,6 +1,26 @@
 import torch
 import torch.nn as nn
 
+'''
+1. Conv2d
+- là lớp tích chập 2 chiều (2D convolution), thành phần cốt lõi của CNN
+- Nó trượt một tập bộ lọc (kernel/filter) nhỏ trên ảnh, ở mỗi vị trí tính tổng có trọng số của vùng ảnh đó, để trích xuất đặc trưng cục bộ như cạnh, góc, đường cong.
+- Các bộ lọc là tham số học được, nên mô hình tự học xem cần phát hiện đặc trưng nào.
+
+Các tham số của 
+- in_channels: Số kênh đầu vào (MNIST: 1, ảnh RGB: 3). Phải khớp với C của tensor đầu vào
+- out_channels: Số bộ lọc, cũng là số kênh đầu ra (feature maps)
+- kernel_size: Kích thước bộ lọc, ví dụ 3 hoặc (3, 3)
+- stride=1: Bước trượt của bộ lọc. Lớn hơn 1 thì ảnh đầu ra nhỏ đi
+- padding=0: Số pixel viền thêm quanh ảnh. Có thể dùng 'same' hoặc 'valid'
+
+2. BatchNormalzation
+- Nó chuẩn hóa mỗi kênh của feature map về trung bình ≈ 0 và phương sai ≈ 1, rồi cho mô hình học cách co giãn và dịch lại.
+- Mục đích là làm quá trình huấn luyện ổn định và nhanh hơn.
+- BatchNormalzation(out_channels): phải lấy out_channels của Conv2d
+
+'''
+
 class CnnModel(nn.Module):
     def __init__(self):
         super(CnnModel, self).__init__()
@@ -12,11 +32,13 @@ class CnnModel(nn.Module):
         # Khối Conv 1: (1, 28, 28) -> (32, 14, 14)
         self.conv1 = nn.Conv2d(in_channels=1, out_channels=32, kernel_size=3, padding=1)
         self.relu1 = nn.ReLU()
+        self.bn1 = nn.BatchNorm2d(32)
         self.pool1 = nn.MaxPool2d(kernel_size=2, stride=2)
         
         # Khối Conv 2: (32, 14, 14) -> (64, 7, 7)
         self.conv2 = nn.Conv2d(in_channels=32, out_channels=64, kernel_size=3, padding=1)
         self.relu2 = nn.ReLU()
+        self.bn2 = nn.BatchNorm2d(64)
         self.pool2 = nn.MaxPool2d(kernel_size=2, stride=2)
         
         # ==========================================
@@ -34,11 +56,13 @@ class CnnModel(nn.Module):
         """
         # Đi qua Khối Conv 1
         x = self.conv1(x)
+        x = self.bn1(x)
         x = self.relu1(x)
         x = self.pool1(x)
         
         # Đi qua Khối Conv 2
         x = self.conv2(x)
+        x = self.bn2(x)
         x = self.relu2(x)
         x = self.pool2(x)
         
