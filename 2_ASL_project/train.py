@@ -6,6 +6,7 @@ import torch.optim as optim
 import config
 from dataset import get_data_loaders
 from models.cnn_model import CnnModel
+from models.resnet_model import get_resnet18
 
 
 def train():
@@ -17,8 +18,9 @@ def train():
 	train_loader, test_loader, classes = get_data_loaders()
 	print(f"--> Tập Train: {len(train_loader.dataset)} mẫu | Tập Test: {len(test_loader.dataset)} mẫu | {len(classes)} lớp")
 
-	# 2. Init model
-	model = CnnModel(num_classes=len(classes)).to(device)
+	# 2. Call Cnn model
+	# model = CnnModel(num_classes=len(classes)).to(device)
+	model = get_resnet18(num_classes=len(classes), pretrained=True).to(device)
 
 	# 3. Loss function and Optimizer
 	criterion = nn.CrossEntropyLoss()
