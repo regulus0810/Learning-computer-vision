@@ -74,7 +74,7 @@ def train():
 				val_total += labels.size(0)
 				val_correct += (predicted == labels).sum().item()
 
-		epoch_train_loss = running_val_loss / val_total
+		epoch_val_loss = running_val_loss / val_total
 		epoch_val_acc = 100.0 * val_correct / val_total
 
 		# print results
