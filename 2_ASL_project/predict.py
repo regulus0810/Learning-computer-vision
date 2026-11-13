@@ -51,6 +51,10 @@ def predict_and_visualize(weights_path=None):
 	preds = preds.cpu().numpy()
 	labels_true = labels_sample.numpy()
 
+	# 5. Vẽ lưới ảnh kết quả (3 hàng x 4 cột)
+    fig, axes = plt.subplots(3, 4, figsize=(12, 9))
+    axes = axes.flatten()
+
 	for i in range(num_samples):
 		ax = axes[i]
 		# Khôi phục ảnh RGB
