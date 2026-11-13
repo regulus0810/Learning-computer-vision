@@ -12,7 +12,8 @@ MODEL_CNN_SAVE_PATH = os.path.join(OUTPUT_DIR, "asl_cnn_model.pth")
 PREDICTION_SAVE_PATH = os.path.join(OUTPUT_DIR, "prediction.png")
 
 # 2. Dataset Parameters
-IMAGE_SIZE = (64, 64)
+# IMAGE_SIZE = (64, 64)
+IMAGE_SIZE = (128, 128) 
 CHANNELS = 3
 NUM_CLASSES = 36
 
