@@ -90,7 +90,7 @@ def train():
 			torch.save(model.state_dict(), save_path)
 			print(f"---> [BEST MODEL: {best_val_acc:.2f}%]")
 	print("\n--> Quá trình huấn luyện hoàn tất!")
-	print(f"--> Trọng số mô hình tốt nhất đã được lưu tại: {save_path} với Val Acc: 
+	print(f"--> Trọng số mô hình tốt nhất đã được lưu tại: {save_path} với Val Acc: {best_val_acc:.2f}%")
 
 if __name__ == "__main__":
 	train()
