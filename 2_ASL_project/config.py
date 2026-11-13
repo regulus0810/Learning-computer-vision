@@ -2,7 +2,7 @@ import os
 import torch
 
 # 1. Datapath
-KAGGLE_PATH = "/kaggle/input/datasets/ayuraj/asl-dataset/asl_dataset"
+KAGGLE_PATH = "/kaggle/input/datasets/ayuraj/asl-dataset/asl_dataset/asl_dataset"
 
 DATA_DIR = KAGGLE_PATH
 

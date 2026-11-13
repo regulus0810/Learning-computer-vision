@@ -18,7 +18,7 @@ def train():
 	print(f"--> Tập Train: {len(train_loader.dataset)} mẫu | Tập Test: {len(test_loader.dataset)} mẫu | {len(classes)} lớp")
 
 	# 2. Init model
-	model = CnnModel(num_classes=config.NUM_CLASSES).to(device)
+	model = CnnModel(num_classes=len(classes)).to(device)
 
 	# 3. Loss function and Optimizer
 	criterion = nn.CrossEntropyLoss()
