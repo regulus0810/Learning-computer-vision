@@ -11,6 +11,8 @@ class MlpConfig:
     HIDDEN_2 = 64
     NUM_CLASSES = 10
 
+
+
 # --- Train ---
 BATCH_SIZE = 64
 LEARNING_RATE = 0.001

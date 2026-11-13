@@ -4,7 +4,13 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from models.mlp_model import MlpModel
+from models.cnn_model import CnnModel
 from dataset import get_data_loaders
+
+'''
+Sử dung độ chính xác (Accuracy):
+Accuracy = số lượng mẫu đoán đúng * 100% / tổng số lượng mẫu
+'''
 
 # Nhận weights_path làm tham số truyền vào
 def predict_and_visualize(weights_path="mlp_mnist.pth"):
