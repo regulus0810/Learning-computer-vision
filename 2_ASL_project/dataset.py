@@ -17,9 +17,8 @@ def get_data_loaders():
 	train_transform = transforms.Compose([
 		transforms.Resize(config.IMAGE_SIZE),
 		transforms.RandomRotation(degrees=10),   # Xoay nhẹ góc tối đa 10 độ
-		transforms.RandomAffine(degrees=0, translate=(0.05, 0.05)), # Dịch chuyển nhẹ khung hình
-		transforms.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.1, hue=0.02)	# Biến đổi ánh sáng/màu da nhẹ nhàng
-		transforms.ColorJitter(brightness=0.1, contrast=0.1), # Biến đổi nhẹ độ sáng/tương phản
+		transforms.RandomAffine(degrees=0, translate=(0.05, 0.05)), # Biến đổi ánh sáng/màu da nhẹ nhàng
+		transforms.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.1, hue=0.02)	# Biến đổi nhẹ độ sáng/tương phản
 		transforms.ToTensor(),
 		transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]) # Chuẩn hóa theo chuẩn ảnh màu RGB
 	])
