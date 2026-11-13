@@ -40,7 +40,7 @@ def predict_and_visualize(weights_path=None):
 	images, labels = next(iter(test_loader))
 	num_samples = min(12, images.size(0))
 	images_sample = images[:num_samples]
-	labels_sample = images[:num_samples]
+	labels_sample = labels[:num_samples]
 
 	# 4. predict
 	images_dev = images_sample.to(device)
