@@ -8,7 +8,7 @@ DATA_DIR = KAGGLE_PATH
 
 # Path to save results
 OUTPUT_DIR = "/kaggle/working/"
-MODEL_CNN_SAVE_PATH = os.path.join(OUTPUT_DIR, "asl_cnn_model")
+MODEL_CNN_SAVE_PATH = os.path.join(OUTPUT_DIR, "asl_cnn_model.pth")
 PREDICTION_SAVE_PATH = os.path.join(OUTPUT_DIR, "prediction.png")
 
 # 2. Dataset Parameters

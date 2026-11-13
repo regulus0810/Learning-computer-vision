@@ -21,19 +21,19 @@ class CnnModel(nn.Module):
         )
 
         # Block Conv 2: (32, 32, 32) -> (64, 16, 16)
-        self.conv_block2 = nn.sequential(
+        self.conv_block2 = nn.Sequential(
             nn.Conv2d(in_channels=32, out_channels=64, kernel_size=3, padding=1, bias=False),
             nn.BatchNorm2d(64),
             nn.ReLU(),
-            nn.MaxPool2d(kernel_size=3, stride2)
+            nn.MaxPool2d(kernel_size=3, stride=2)
         )
 
         # Block Conv 3: 64, 16, 16) -> (128, 8, 8)
-        self.conv_block3 = nn.sequential(
+        self.conv_block3 = nn.Sequential(
             nn.Conv2d(in_channels=64, out_channels=128, kernel_size=3, padding=1, bias=False),
             nn.BatchNorm2d(128),
             nn.ReLU(),
-            nn.MaxPool2d(kernel_size=3, stride2)
+            nn.MaxPool2d(kernel_size=3, stride=2)
         )
 
         # Gom kích thước không gian về (4, 4) bất kể đầu vào là 64x64 hay 128x128
@@ -41,7 +41,7 @@ class CnnModel(nn.Module):
 
         # 2. classifier head
         # Kích thước sau khi duỗi phẳng (Flatten): 128 channels * 4 * 4 = 2048
-        self.classifier = nn.Seqential(
+        self.classifier = nn.Sequential(
             nn.Flatten(),
             nn.Linear(128 * 4 * 4, 256),
             nn.ReLU(),
@@ -62,7 +62,7 @@ class CnnModel(nn.Module):
 # --- KIỂM TRA MÔ HÌNH (Sanity Check) ---
 if __name__ == "__main__":
     # Khởi tạo mô hình
-    model = AslCnnModel(num_classes=36)
+    model = CnnModel(num_classes=36)
     print("=== Kiến trúc mô hình ASL CNN ===")
     print(model)
     # Tạo batch giả lập gồm 4 bức ảnh màu 64x64
