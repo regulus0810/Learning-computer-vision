@@ -25,7 +25,7 @@ def denormalize(tensor_img):
 	img = np.clip(img, 0, 1)            # Cắt các giá trị ngoài biên [0, 1]
 	return img
 
-def predict(weights_path=None):
+def predict_and_visualize(weights_path=None):
 	device = config.DEVICE
 
 	# 1. Load test
