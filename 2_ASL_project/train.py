@@ -48,10 +48,10 @@ def train():
 			optimizer.step()
 
 			 # Thống kê loss và số lượng dự đoán đúng trên tập train
-			 running_train_loss += loss.item() * images.size(0)
-			 _, predicted = torch.max(outputs, 1)
-			 train_total += labels.size(0)
-			 train_correct += (predicted = labels).sum().item()
+			running_train_loss += loss.item() * images.size(0)
+			_, predicted = torch.max(outputs, 1)
+			train_total += labels.size(0)
+			train_correct += (predicted = labels).sum().item()
 
 		epoch_train_loss = running_train_loss / train_total
 		epoch_train_acc = 100.0 * train_correct / train_total
