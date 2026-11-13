@@ -28,6 +28,9 @@ def denormalize(tensor_img):
 def predict_and_visualize(weights_path=None):
 	device = config.DEVICE
 
+	if weights_path is None:
+		weights_path = config.MODEL_CNN_SAVE_PATH
+
 	# 1. Load test
 	_, test_loader, classes = get_data_loaders()
 

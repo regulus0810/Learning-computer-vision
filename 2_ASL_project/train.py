@@ -89,6 +89,8 @@ def train():
 			best_val_acc = epoch_val_acc
 			torch.save(model.state_dict(), save_path)
 			print(f"---> [BEST MODEL: {best_val_acc:.2f}%]")
+		else:
+			print("")
 	print("\n--> Quá trình huấn luyện hoàn tất!")
 	print(f"--> Trọng số mô hình tốt nhất đã được lưu tại: {save_path} với Val Acc: {best_val_acc:.2f}%")
 
