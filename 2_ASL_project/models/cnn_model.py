@@ -6,6 +6,23 @@ Kiến trúc CNN cho bài toán nhận diện cử chỉ tay (ASL):
 - Feature Extractor: 3 Conv Blocks (Conv2d + BatchNorm2d + ReLU + MaxPool2d)
 - Adaptive Pooling: Đưa feature map về (4, 4) cố định
 - Classifier Head: Flatten -> Linear(2048 -> 256) -> ReLU -> Dropout(0.4) -> Linear(256 -> 36)
+
+nn.Sequential(): tập hợp nhiều phép biến đổi dùng cho Tensor để xây dựng mạng Neural.
+
+- Trong torch.nn có các lớp tích chập (convolutional layers): trích xuất đặc trưng cục bộ
+	- Conv1d (N, C, L): dữ liệu dạng chuỗi 1 chiều (tín hiệu âm thanh, giọng nói, sóng, chỗi thời gian, văn bản)
+	- Conv2d (N, C, H, W): dữ liệu dạng lưới 2 chiều (ảnh: 1 channel or 3 channels)
+	- Conv3d (N, C, D, H, W): dữ liệu 3 chiều (video, ảnh y tế 3D)
+			N = batch_size, C = channels, L = length, H = height, W = weight, D = deepth
+
+- nn.BatchNorm2d(): ổn định phân phối giá trị giữa các lớp
+
+- nn.ReLU(): get maximum value
+
+- nn.MaxPool2d(): get bigest value in 1 frame
+	Related variants:
+	- AvgPool2d(): get aveger value in 1 frame
+	- nn.AdaptiveAvgPool2d(): tự tìm đầu ra tốt nhất
 '''
 
 class CnnModel(nn.Module):

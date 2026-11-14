@@ -36,8 +36,8 @@ def predict_and_visualize(weights_path=None):
 	_, test_loader, classes = get_data_loaders()
 
 	# 2. Init model and load learned weights
-	# model = CnnModel(num_classes=len(classes)).to(device)
-	model = get_resnet18(num_classes=len(classes), pretrained=True).to(device)
+	model = CnnModel(num_classes=len(classes)).to(device)
+	# model = get_resnet18(num_classes=len(classes), pretrained=True).to(device)
 	model.load_state_dict(torch.load(weights_path, map_location=device))
 	model.eval()
 

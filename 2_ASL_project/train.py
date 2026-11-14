@@ -14,17 +14,16 @@ def train():
 	print(f"--> Sử dụng thiết bị tính toán: {device}")
 
 	# 1. Load data
-	print("--> Đang chuẩn bị dữ liệu...")
+	print("-- Loading data")
 	train_loader, test_loader, classes = get_data_loaders()
-	print(f"--> Tập Train: {len(train_loader.dataset)} mẫu | Tập Test: {len(test_loader.dataset)} mẫu | {len(classes)} lớp")
 
-	# 2. Call Cnn model
-	# model = CnnModel(num_classes=len(classes)).to(device)
-	model = get_resnet18(num_classes=len(classes), pretrained=True).to(device)
+	# 2. Call model
+	model = CnnModel(num_classes=len(classes)).to(device)
+	# model = get_resnet18(num_classes=len(classes), pretrained=True).to(device)
 
 	# 3. Loss function and Optimizer
-	criterion = nn.CrossEntropyLoss()
-	optimizer = optim.Adam(model.parameters(), lr=config.LEARNING_RATE)
+	criterion = nn.CrossEntropyLoss()	# Loss function for classification
+	optimizer = optim.Adam(model.parameters(), lr=config.LEARNING_RATE)	# Update weights
 
 	# Save best val score
 	best_val_acc = 0.0
@@ -42,8 +41,8 @@ def train():
 			images, labels = images.to(device), labels.to(device)
 
 			# 5 bước huấn luyện kinh điển trong PyTorch
-			outputs = model(images)
-			loss = criterion(outputs, labels)
+			outputs = model(images)	# Model get images to predict labels
+			loss = criterion(outputs, labels)	# Calculate loss
 
 			optimizer.zero_grad()
 			loss.backward()
@@ -55,8 +54,8 @@ def train():
 			train_total += labels.size(0)
 			train_correct += (predicted == labels).sum().item()
 
-		epoch_train_loss = running_train_loss / train_total
-		epoch_train_acc = 100.0 * train_correct / train_total
+		epoch_train_loss = running_train_loss / train_total		# mean loss for each sample
+		epoch_train_acc = 100.0 * train_correct / train_total	# % predict true
 
 		# 2. VALIDATION / TEST PHASE
 		model.eval()
