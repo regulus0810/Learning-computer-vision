@@ -1,4 +1,5 @@
 import os
+from collections import Counter
 
 # Call library torch
 import torch
@@ -79,8 +80,21 @@ def get_data_loaders():
 if __name__ == "__main__":
 	print(f"Đang kiểm tra nạp dữ liệu từ: {config.DATA_DIR}")
 	if os.path.exists(config.DATA_DIR):
+		# Loaded original dataset
+		full_dataset = datasets.ImageFolder(root=config.DATA_DIR)
+
+		# 1. Count amount of image of each classes
+		class_counts = Counter(full_dataset.targets)
+		class_names = full_dataset.classes
+
+		print(f"Total images: {len(full_dataset)}")
+		print(f"Total classes: {len(class_names)}")
+		print(f"{'Class':<10} {'images':>8}")
+		print("-" * 20)
+		for idx, name in enumerate(class_names):
+			print(f"{name:<10} {class_counts[idx]:>8}")
+
 		train_loader, test_loader, classes = get_data_loaders()
-		print(f"--> Số lượng lớp: {len(classes)} ({classes[:5]} ... {classes[-5:]})")
 		print(f"--> Tổng số batch tập Train: {len(train_loader)}")
 		print(f"--> Tổng số batch tập Test:  {len(test_loader)}")
 		# Lấy thử 1 batch đầu tiên kiểm tra shape
