@@ -1,5 +1,5 @@
 import os
-from tqdm import tqdm	# Dùng tqdm để hiển thị thanh tiến trình từng batch
+from tqdm import tqdm
 
 import torch
 import torch.nn as nn
@@ -39,38 +39,37 @@ def train():
 		train_correct = 0
 		train_total = 0
 
-		# Dùng tqdm để hiển thị thanh tiến trình từng batch
+		# Thanh tiến trình Train
 		train_pbar = tqdm(train_loader, desc=f"Epoch [{epoch+1:02d}/{config.EPOCHS:02d}] Train", leave=False)
 		for images, labels in train_pbar:
 			images, labels = images.to(device), labels.to(device)
 
-			# 5 bước huấn luyện kinh điển trong PyTorch
 			optimizer.zero_grad()
 			outputs = model(images)
-			loss = criterion(outputs, labels)	
+			loss = criterion(outputs, labels)
 			loss.backward()
 			optimizer.step()
-			
-			# Thống kê loss và số lượng dự đoán đúng trên tập train
+
 			running_train_loss += loss.item() * images.size(0)
 			_, predicted = torch.max(outputs, 1)
 			train_total += labels.size(0)
 			train_correct += (predicted == labels).sum().item()
 
-			# Cập nhật loss tức thời lên thanh tiến trình
 			train_pbar.set_postfix({'loss': f'{loss.item():.4f}'})
 
-		epoch_train_loss = running_train_loss / train_total		# mean loss for each sample
-		epoch_train_acc = 100.0 * train_correct / train_total	# % predict true
+		epoch_train_loss = running_train_loss / train_total
+		epoch_train_acc = 100.0 * train_correct / train_total
 
-		# 2. VALIDATION / TEST PHASE
+		# 2. VALIDATION PHASE
 		model.eval()
 		running_val_loss = 0.0
 		val_correct = 0
 		val_total = 0
 
+		# Thanh tiến trình Val (không lo màn hình bị đơ nữa)
 		with torch.no_grad():
-			for images, labels in val_loader:
+			val_pbar = tqdm(val_loader, desc=f"Epoch [{epoch+1:02d}/{config.EPOCHS:02d}] Val  ", leave=False)
+			for images, labels in val_pbar:
 				images, labels = images.to(device), labels.to(device)
 
 				outputs = model(images)
@@ -84,21 +83,24 @@ def train():
 		epoch_val_loss = running_val_loss / val_total
 		epoch_val_acc = 100.0 * val_correct / val_total
 
+		# In kết quả tổng kết epoch
 		print(
-			f"Epoch [{epoch+1:02d}/{config.EPOCHS:02d}]"
+			f"Epoch [{epoch+1:02d}/{config.EPOCHS:02d}] "
 			f"| Train Loss: {epoch_train_loss:.4f} - Train Acc: {epoch_train_acc:.2f}% "
 			f"| Val Loss: {epoch_val_loss:.4f} - Val Acc: {epoch_val_acc:.2f}%", end=""
 		)
 
-		# Save model if val acc best
+		# Lưu mô hình tốt nhất
 		if epoch_val_acc > best_val_acc:
 			best_val_acc = epoch_val_acc
 			torch.save(model.state_dict(), save_path)
-			print(f"---> [BEST MODEL: {best_val_acc:.2f}%]")
+			print(f" ---> [BEST MODEL: {best_val_acc:.2f}%]")
 		else:
 			print("")
+
 	print("\n--> Quá trình huấn luyện hoàn tất!")
 	print(f"--> Trọng số mô hình tốt nhất đã được lưu tại: {save_path} với Val Acc: {best_val_acc:.2f}%")
+
 
 if __name__ == "__main__":
 	train()
