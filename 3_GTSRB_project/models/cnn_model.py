@@ -4,7 +4,7 @@ import torch.nn as nn
 import config
 
 class CnnModel(nn.Module):
-	def __init__(self, num_classes=config.NUM_CLASSES):
+	def __init__(self, num_classes=43):
 		super(CnnModel, self).__init__()
 
 		# 1. Block Conv 1: (3, 64, 64) -> (32, 32, 32)
@@ -55,7 +55,7 @@ class CnnModel(nn.Module):
 # --- KIỂM TRA MÔ HÌNH (Sanity Check) ---
 if __name__ == "__main__":
 	# Khởi tạo mô hình
-	model = CnnModel(num_classes=config.NUM_CLASSES)
+	model = CnnModel(num_classes=43)
 	print("=== Kiến trúc mô hình GTSRB CNN ===")
 	print(model)
 	# Tạo batch giả lập gồm 4 bức ảnh màu 64x64
