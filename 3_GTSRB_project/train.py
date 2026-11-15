@@ -1,4 +1,5 @@
 import os
+from tqdm import tqdm	# Dùng tqdm để hiển thị thanh tiến trình từng batch
 
 import torch
 import torch.nn as nn
@@ -38,13 +39,15 @@ def train():
 		train_correct = 0
 		train_total = 0
 
-		for images, labels in train_loader:
+		# Dùng tqdm để hiển thị thanh tiến trình từng batch
+ 		train_pbar = tqdm(train_loader, desc=f"Epoch [{epoch+1:02d}/{config.EPOCHS:02d}] Train", leave=False)
+		for images, labels in train_pbar:
 			images, labels = images.to(device), labels.to(device)
 
 			# 5 bước huấn luyện kinh điển trong PyTorch
 			optimizer.zero_grad()
-			outputs = model(images)	# Model get images to predict labels
-			loss = criterion(outputs, labels)	# Calculate loss
+			outputs = model(images)
+			loss = criterion(outputs, labels)	
 			loss.backward()
 			optimizer.step()
 
@@ -53,6 +56,9 @@ def train():
 			_, predicted = torch.max(outputs, 1)
 			train_total += labels.size(0)
 			train_correct += (predicted == labels).sum().item()
+
+			# Cập nhật loss tức thời lên thanh tiến trình
+ 			train_pbar.set_postfix({'loss': f'{loss.item():.4f}'})
 
 		epoch_train_loss = running_train_loss / train_total		# mean loss for each sample
 		epoch_train_acc = 100.0 * train_correct / train_total	# % predict true

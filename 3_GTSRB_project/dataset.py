@@ -60,16 +60,16 @@ def get_data_loaders():
 		train_dataset,
 		batch_size=config.BATCH_SIZE,
 		shuffle=True,
-		num_workers=2,
-		pin_memory=True if torch.cuda.is_available() else False
+		num_workers=0,
+		pin_memory=False
 	)
 
 	val_loader = DataLoader(
 		val_dataset,
 		batch_size=config.BATCH_SIZE,
 		shuffle=False,
-		num_workers=2,
-		pin_memory=True if torch.cuda.is_available() else False
+		num_workers=0,
+		pin_memory=False
 	)
 
 	# Trả về cả danh sách tên các lớp (36 classes) để dùng lúc visualize / predict
