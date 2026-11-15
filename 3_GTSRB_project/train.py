@@ -84,7 +84,6 @@ def train():
 		epoch_val_loss = running_val_loss / val_total
 		epoch_val_acc = 100.0 * val_correct / val_total
 
-		# print results
 		print(
 			f"Epoch [{epoch+1:02d}/{config.EPOCHS:02d}]"
 			f"| Train Loss: {epoch_train_loss:.4f} - Train Acc: {epoch_train_acc:.2f}% "
