@@ -15,6 +15,7 @@ META_CSV_PATH = "/kaggle/input/datasets/meowmeowmeowmeowmeow/gtsrb-german-traffi
 # Path to save results
 OUTPUT_DIR = "/kaggle/working/"
 MODEL_CNN_SAVE_PATH = os.path.join(OUTPUT_DIR, "GTSRB_cnn_model.pth")
+MODEL_VGG19_SAVE_PATH = os.path.join(OUTPUT_DIR, "GTSRB_vgg19_model.pth")
 MODEL_RESNET18_SAVE_PATH = os.path.join(OUTPUT_DIR, "GTSRB_resnet18_model.pth")
 PREDICTION_SAVE_PATH = os.path.join(OUTPUT_DIR, "prediction.png")
 

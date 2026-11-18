@@ -29,7 +29,7 @@ def train():
 
 	# Save best val score
 	best_val_acc = 0.0
-	save_path = config.MODEL_CNN_SAVE_PATH
+	save_path = config.MODEL_VGG19_SAVE_PATH
 
 	print("\n--> Bắt đầu quá trình huấn luyện...")
 	for epoch in range(config.EPOCHS):
