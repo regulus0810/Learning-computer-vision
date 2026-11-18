@@ -8,7 +8,7 @@ import torch.optim as optim
 import config
 from dataset import get_data_loaders
 from models.cnn_model import CnnModel
-# from models.resnet_model import get_resnet18
+from models.vgg19_model import VGG19
 
 
 def train():
@@ -20,7 +20,7 @@ def train():
 	train_loader, val_loader, classes = get_data_loaders()
 
 	# 2. Call model
-	model = CnnModel(num_classes=len(classes)).to(device)
+	model = VGG19(num_classes=len(classes)).to(device)
 	# model = get_resnet18(num_classes=len(classes), pretrained=True).to(device)
 
 	# 3. Loss function and Optimizer
